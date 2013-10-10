@@ -1,14 +1,17 @@
+# import viz specific libraries
 import viz
-import math
-import random
 import vizact
 import vizspace
 import vizcam
 import vizinfo
+
+# import general libraries
+import math
+import random
 import scipy.misc
 import scipy.ndimage
 import numpy as np
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import os
 
 
@@ -46,8 +49,7 @@ def hist_256(img_array):
 			hist_vector[pixel_val] = hist_vector[pixel_val] + 1
 	return hist_vector
 
-def hist_eq(img_hist, reduction_factor = 8):
-	num_bins = math.pow(2, reduction_factor)
+def hist_eq(img, img_hist):
 	#use cumulative distribution function
 	cdf = cumulative_sum(img_hist)
 	cdf = 255 * (cdf / cdf[-1])
@@ -81,23 +83,19 @@ def shiftCurves(image, slidervalue):
 		else:
 			greyhist[i] += slidervalue*i - slidervalue*(i-counter)
 			counter -=1
-	return hist_eq(greyhist, 8)
+	return hist_eq(grey, greyhist, 8)
 		
 if __name__ =="__main__":
-	img = load_image('87.png')
-	print(img.shape)
-	test = shiftCurves(img,200)
-	print(test[0].shape)
+	img = load_image('87.png')	# loads image into an array using scipy.misc.imread returning a nth dimensional array
+	test = shiftCurves(img,200)	# takes image and turns it grey, generates a histogram, flattens the image array into a 1D array, adds proportionally adds slidervalues to the histogram, then computes the cdf and 'equalizes' the image
 	
-	
+	# viz specific commands to load image to viz's renderer as a texture on a quad
+	# also sets camera field of view and keyboard controls to standard FPS controls
 	viz.setMultiSample(4)
 	viz.fov(60)
 	viz.go()
-
 	viz.cam.setHandler(vizcam.KeyboardCamera())
-
 	picture = viz.addTexture('87.png')
-
 	quad = viz.addTexQuad()
 	quad.setPosition([0,1.5,4])
 	quad.texture(picture)
