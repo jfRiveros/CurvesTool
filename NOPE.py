@@ -1,10 +1,10 @@
-#import viz
+import viz
 import math
 import random
-#import vizact
-#import vizspace
-#import vizcam
-#import vizinfo
+import vizact
+import vizspace
+import vizcam
+import vizinfo
 import scipy.misc
 import scipy.ndimage
 import numpy as np
@@ -69,13 +69,13 @@ def cumulative_sum(array):
 	return cumulative_sum
 	
 def shiftCurves(image, slidervalue):
-	image = np.ndarray.flatten(image)
-	image_length = image.shape[0]
 	grey = rgb2gray(image)
 	greyhist = hist_256(grey)
+	grey = grey.flatten()
+	image_length = grey.shape[0]
 	slidervalue = slidervalue/(image_length/2)
 	counter = 127
-	for i in range(greyhist):
+	for i in range(greyhist.shape[0]):
 		if slidervalue*i <= slidervalue:
 			greyhist[i] += slidervalue*i
 		else:
@@ -86,7 +86,7 @@ def shiftCurves(image, slidervalue):
 if __name__ =="__main__":
 	img = load_image('87.png')
 	print(img.shape)
-	test = shiftCurves(img,20)
+	test = shiftCurves(img,200)
 	print(test[0].shape)
 	
 	
