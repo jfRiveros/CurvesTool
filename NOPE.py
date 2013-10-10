@@ -11,7 +11,7 @@ import numpy as np
 #import matplotlib.pyplot as plt
 import os
 
-#testing other contributors
+
 def load_image(file_path):
 	img_array = scipy.misc.imread(file_path)
 	return img_array
