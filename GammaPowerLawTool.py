@@ -16,11 +16,11 @@ def load_image(file_path):
 	img_array = scipy.misc.imread(file_path)
 	return img_array
 
-def plt_img(img_array, map='gray',bool=0):
+def plt_img(img_array,bool=0):
 	if bool == 0:
-		plt.imshow(img_array,cmap=map)
+		plt.imshow(img_array,cmap='gray')
 	else:
-		plt.imshow(img_array,cmap=map),plt.show()
+		plt.imshow(img_array,cmap='gray'),plt.show()
 
 def rgb2gray(img_rgb):
 	R_CONST = 0.299
@@ -40,25 +40,18 @@ def rgb2gray(img_rgb):
 			img_gray[m,n] = (R_CONST * img_rgb_r) + (G_CONST * img_rgb_g) + (B_CONST * img_rgb_b)
 	return img_gray
 
-def powerlaw(img, slidervalue, sigma):
-	shiftedImg = np.power(np.round(np.power(img+sigma, slidervalue)),1/slidervalue)
+def shiftCurves(img, slidervalue):
+	shiftedImg = np.power(np.round(np.power(img, slidervalue)),1/slidervalue)
 	return shiftedImg
-
-def logT(img):
-	loggedImg = np.exp(np.round(np.log(img+1)))
-	return loggedImg
 
 if __name__ =="__main__":
 	img = load_image('21391920.jpg')	# loads image into an array using scipy.misc.imread returning a nth dimensional array
 	grey = rgb2gray(img)
-	yolo = powerlaw(grey, 1, 150)
-	bolo = logT(grey)
-	
-	# #matplotlib graphs for testing
-	# plt.subplot(121),plt_img(grey)
-	# plt.subplot(122),plt_img(yolo)
-		#plt.subplot(133),plt_img(bolo)
-	#plt.show()
+	CurvedImage = shiftCurves(grey, 1)
+
+	#matplotlib graphs for testing
+	plt.imshow(CurvedImage,cmap='gray')
+	plt.show()
 
 	# viz specific commands to load image to viz's renderer as a texture on a quad
 	# also sets camera field of view and keyboard controls to standard FPS controls
